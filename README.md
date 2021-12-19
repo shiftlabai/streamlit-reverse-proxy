@@ -2,15 +2,32 @@
 
 This repo contains the demo Streamlit app documented [here](https://docs.streamlit.io/library/get-started/create-an-app), running behind an NGINX reverse proxy.
 
-# Running in Docker
+# Running under HTTPS
 
-To get started, install Docker and docker-compose (Docker for Mac includes docker-compose), then:
+To run under HTTPS on your own machine:
 
-```
-docker-compose up -d
-```
+1. Install [mkcert](https://github.com/FiloSottile/mkcert#installation)
+2. Edit your `/etc/hosts` file and add the following.
 
-Now navigate to http://localhost:8080/ to view the app via the NGINX proxy, or http://localhost:8051 to connect directly to the Streamlit app.
+    ```
+    127.0.0.1 secure.localhost
+    ```
+
+    (Adding this local alias means we can avoid using https://localhost, since doing so in most modern browsers will cause them to redirect all subsequent traffic to that domain to HTTPS. That creates problems any time you want to run some other service over plain HTTP. See [here](https://stackoverflow.com/q/25277457) for more.)
+
+3. In the root directory of this repo, run:
+
+    ```
+    mkcert secure.localhost
+    ```
+
+4. Now bring up the docker services. Note that we need to set the `STREAMLIT_BROWSER_SERVER_ADDRESS` environment variable to our new server domain, since we're no longer using `localhost`, which is [whitelisted in Streamlit](https://github.com/streamlit/streamlit/blob/dd9084523e365e637443ea351eaaaa25f52d8412/lib/streamlit/server/server_util.py#L103).
+
+    ```
+    STREAMLIT_BROWSER_SERVER_ADDRESS=secure.localhost docker-compose up -d
+    ```
+
+5. Visit https://secure.localhost:8081/
 
 # Streamlit reverse proxy issues
 

@@ -12,5 +12,7 @@ services:
     image: nginx:1.21.5-alpine
     volumes:
       - "$PWD/nginx.conf:/etc/nginx/conf.d/default.conf:ro"
+      - "$PWD/secure.localhost.pem:/secrets/secure.localhost.pem:ro"
+      - "$PWD/secure.localhost-key.pem:/secrets/secure.localhost-key.pem:ro"
     ports:
-      - 8080:8080
+      - 8081:443
