@@ -19,7 +19,7 @@ To get started, install Docker and docker-compose (Docker for Mac includes docke
 docker-compose up -d
 ```
 
-Now navigate to http://localhost:8080/
+Now navigate to http://localhost:8080/ to view the app via the NGINX proxy, or http://localhost:8051 to connect directly to the Streamlit app.
 
 # Streamlit reverse proxy issues
 
