@@ -2,15 +2,6 @@
 
 This repo contains the demo Streamlit app documented [here](https://docs.streamlit.io/library/get-started/create-an-app), running behind an NGINX reverse proxy.
 
-# Running locally
-
-Start a virtual env using Python 3.9, then:
-
-```
-pip3 install -r requirements.txt
-streamlit run uber_pickups.py
-```
-
 # Running in Docker
 
 To get started, install Docker and docker-compose (Docker for Mac includes docker-compose), then:
