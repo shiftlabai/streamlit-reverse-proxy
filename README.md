@@ -25,16 +25,13 @@ Now navigate to http://localhost:8080/ to view the app via the NGINX proxy, or h
 
 ## Websocket won't connect through Nginx reverse proxy unless you use `localhost`, even over regular HTTP
 
-To demonstrate:
+If you're using a host other than `localhost` (or one of the other options explicitly [whitelisted in Streamlit](https://github.com/streamlit/streamlit/blob/dd9084523e365e637443ea351eaaaa25f52d8412/lib/streamlit/server/server_util.py#L101)), you need to set Streamlit's `browser.serverAddress` config value, otherwise attempts to connect to the web socket endpoint (`/stream`) will be rejected with a 403 error.
+
+You can set the `browser.serverAddress` config value by [passing it as an argument](https://docs.streamlit.io/library/advanced-features/configuration) to the `streamlit` command, or by setting the `STREAMLIT_BROWSER_SERVER_ADDRESS` environment variable. (You should use the environment variable approach if you're using docker compose.)
+
+For example, if you've aliased `foo.bar` to `localhost` and want to use that domain name, you need to do:
 
 ```
-docker compose up -d
+export STREAMLIT_BROWSER_SERVER_ADDRESS=foo.bar
+docker-compose up -d
 ```
-
-Then try accessing the app via e.g. your Tailscale IP. e.g. http://100.124.117.59:8080. You'll just see an eternal "Please wait..." message in the browser.
-
-NB: This works OK when running streamlit directly (i.e. running `streamlit run xxx.py`), but doesn't work when accessing via Nginx.
-
-## Websocket won't connect when connecting via HTTPS
-
-May or may not be the same problem as above.

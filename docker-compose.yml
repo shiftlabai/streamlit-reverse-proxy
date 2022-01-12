@@ -6,6 +6,8 @@ services:
     # will be via the NGINX reverse proxy.
     ports:
       - 8501:8501
+    environment:
+      - STREAMLIT_BROWSER_SERVER_ADDRESS
   proxy:
     image: nginx:latest
     volumes:
