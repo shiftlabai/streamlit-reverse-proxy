@@ -9,7 +9,7 @@ services:
     environment:
       - STREAMLIT_BROWSER_SERVER_ADDRESS
   proxy:
-    image: nginx:latest
+    image: nginx:1.21.5-alpine
     volumes:
       - "$PWD/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro"
     ports:
