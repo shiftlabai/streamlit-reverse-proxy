@@ -147,5 +147,4 @@ cython_debug/
 #.idea/
 
 
-secure.localhost.pem
-secure.localhost-key.pem
+*.pem

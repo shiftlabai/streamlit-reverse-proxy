@@ -18,7 +18,7 @@ To run under HTTPS on your own machine:
 3. In the root directory of this repo, run:
 
     ```
-    mkcert secure.localhost
+    mkcert -cert-file streamlit-demo.pem -key-file streamlit-demo-key.pem secure.localhost
     ```
 
 4. Now bring up the docker services. Note that we need to set the `STREAMLIT_BROWSER_SERVER_ADDRESS` environment variable to our new server domain, since we're no longer using `localhost`, which is [whitelisted in Streamlit](https://github.com/streamlit/streamlit/blob/dd9084523e365e637443ea351eaaaa25f52d8412/lib/streamlit/server/server_util.py#L103).
