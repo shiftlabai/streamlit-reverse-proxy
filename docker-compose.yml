@@ -2,10 +2,12 @@ version: '3.9'
 services:
   app:
     build: .
-    # Expose the app port directly for debugging. The intention is that access
-    # will be via the NGINX reverse proxy.
-    ports:
-      - 8501:8501
+    # Uncomment the ports section to expose the app port directly, for
+    # debugging. The intention is that access will be via the NGINX reverse
+    # proxy.
+    #
+    # ports:
+    #   - 8501:8501
     environment:
       - STREAMLIT_BROWSER_SERVER_ADDRESS
   proxy:
