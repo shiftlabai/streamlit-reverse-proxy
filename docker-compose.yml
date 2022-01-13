@@ -15,4 +15,4 @@ services:
       - "$PWD/secure.localhost.pem:/secrets/secure.localhost.pem:ro"
       - "$PWD/secure.localhost-key.pem:/secrets/secure.localhost-key.pem:ro"
     ports:
-      - 8081:443
+      - 8502:8502
