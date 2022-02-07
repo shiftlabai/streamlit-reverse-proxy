@@ -27,7 +27,7 @@ To run under HTTPS on your own machine:
     STREAMLIT_BROWSER_SERVER_ADDRESS=secure.localhost docker-compose up -d
     ```
 
-5. Visit https://secure.localhost:8081/
+5. Visit https://secure.localhost:8502/
 
 # Streamlit reverse proxy issues
 
