@@ -29,6 +29,52 @@ To run under HTTPS on your own machine:
 
 5. Visit https://secure.localhost:8502/
 
+The site uses HTTP basic auth, which is implemented not in Streamlit but in the [Nginx reverse proxy server](http://nginx.org/en/docs/http/ngx_http_auth_basic_module.html). Log in with these details:
+
+username: `demouser`
+password: `p4s5w0rd`
+
+Once logged in, your credentials persist until you restart your browser (or the Nginx server).
+
+You can use the same credentials to authenticate programmatic calls (e.g. API calls), but using the `Authorization` HTTP header, with this format:
+
+```
+Authorization: Basic <token>
+```
+
+Where `<token>` is formed by concatenating the username and password with a colon and then base64-encoding the result.
+
+GET without authentication returns a 401 error:
+
+```sh
+$ curl -I https://secure.localhost:8502
+HTTP/1.1 401 Unauthorized
+Server: nginx/1.21.5
+Date: Mon, 07 Feb 2022 11:49:22 GMT
+Content-Type: text/html
+Content-Length: 179
+Connection: keep-alive
+WWW-Authenticate: Basic realm="Top Secret Site"
+```
+
+GET with authentication returns a 200 result:
+
+```sh
+$ export TOKEN=$(echo -n "demouser:p4s5w0rd" | base64)
+$ curl -I -H "Authorization: Basic $TOKEN" https://secure.localhost:8502
+HTTP/1.1 200 OK
+Server: nginx/1.21.5
+Date: Mon, 07 Feb 2022 11:50:10 GMT
+Content-Type: text/html
+Content-Length: 5262
+Connection: keep-alive
+Accept-Ranges: bytes
+Etag: "faa7cf06106ffa293981b64a49bfcf66317803d126c32aac720b367520e9c059303f9690f5a8b796cc740ec094e79d0a61d2cbac1273c5435eddd18c98b19d4e"
+Last-Modified: Mon, 07 Feb 2022 11:29:46 GMT
+Cache-Control: no-cache
+Vary: Accept-Encoding
+```
+
 # Streamlit reverse proxy issues
 
 ## Websocket won't connect through Nginx reverse proxy unless you use `localhost`, even over regular HTTP
