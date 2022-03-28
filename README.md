@@ -7,27 +7,21 @@ This repo contains the demo Streamlit app documented [here](https://docs.streaml
 To run under HTTPS on your own machine:
 
 1. Install [mkcert](https://github.com/FiloSottile/mkcert#installation)
-2. Edit your `/etc/hosts` file and add the following.
+2. In the root directory of this repo, run:
 
     ```
-    127.0.0.1 secure.localhost
+    mkcert -cert-file streamlit-demo.pem -key-file streamlit-demo-key.pem localhost.shiftlab.cloud
     ```
+    
+    (`localhost.shiftlab.cloud` resolves to `127.0.0.1`, just like `localhost` does. But using this special domain name means we can avoid using https://localhost, since doing so in most modern browsers will cause them to redirect all subsequent traffic to that domain to HTTPS. That creates problems any time you want to run some other service over plain HTTP. See [here](https://stackoverflow.com/q/25277457) for more.)
 
-    (Adding this local alias means we can avoid using https://localhost, since doing so in most modern browsers will cause them to redirect all subsequent traffic to that domain to HTTPS. That creates problems any time you want to run some other service over plain HTTP. See [here](https://stackoverflow.com/q/25277457) for more.)
-
-3. In the root directory of this repo, run:
-
-    ```
-    mkcert -cert-file streamlit-demo.pem -key-file streamlit-demo-key.pem secure.localhost
-    ```
-
-4. Now bring up the docker services. Note that we need to set the `STREAMLIT_BROWSER_SERVER_ADDRESS` environment variable to our new server domain, since we're no longer using `localhost`, which is [whitelisted in Streamlit](https://github.com/streamlit/streamlit/blob/dd9084523e365e637443ea351eaaaa25f52d8412/lib/streamlit/server/server_util.py#L103).
+3. Now bring up the docker services. Note that we need to set the `STREAMLIT_BROWSER_SERVER_ADDRESS` environment variable to our new server domain, since we're no longer using `localhost`, which is [whitelisted in Streamlit](https://github.com/streamlit/streamlit/blob/dd9084523e365e637443ea351eaaaa25f52d8412/lib/streamlit/server/server_util.py#L103).
 
     ```
-    STREAMLIT_BROWSER_SERVER_ADDRESS=secure.localhost docker-compose up -d
+    STREAMLIT_BROWSER_SERVER_ADDRESS=localhost.shiftlab.cloud docker-compose up -d
     ```
 
-5. Visit https://secure.localhost:8502/
+5. Visit https://localhost.shiftlab.cloud:8502/
 
 The site uses HTTP basic auth, which is implemented not in Streamlit but in the [Nginx reverse proxy server](http://nginx.org/en/docs/http/ngx_http_auth_basic_module.html). Log in with these details:
 
@@ -47,7 +41,7 @@ Where `<token>` is formed by concatenating the username and password with a colo
 GET without authentication returns a 401 error:
 
 ```sh
-$ curl -I https://secure.localhost:8502
+$ curl -I https://`localhost.shiftlab.cloud`:8502
 HTTP/1.1 401 Unauthorized
 Server: nginx/1.21.5
 Date: Mon, 07 Feb 2022 11:49:22 GMT
@@ -61,7 +55,7 @@ GET with authentication returns a 200 result:
 
 ```sh
 $ export TOKEN=$(echo -n "demouser:p4s5w0rd" | base64)
-$ curl -I -H "Authorization: Basic $TOKEN" https://secure.localhost:8502
+$ curl -I -H "Authorization: Basic $TOKEN" https://localhost.shiftlab.cloud:8502
 HTTP/1.1 200 OK
 Server: nginx/1.21.5
 Date: Mon, 07 Feb 2022 11:50:10 GMT
