@@ -1,6 +1,6 @@
-# Streamlit via NGINX
+# Streamlit via Traefik
 
-This repo contains the demo Streamlit app documented [here](https://docs.streamlit.io/library/get-started/create-an-app), running behind an NGINX reverse proxy.
+This repo contains the demo Streamlit app documented [here](https://docs.streamlit.io/library/get-started/create-an-app), running behind a Traefik reverse proxy.
 
 # Running under HTTPS
 
@@ -21,7 +21,7 @@ To run under HTTPS on your own machine:
     STREAMLIT_BROWSER_SERVER_ADDRESS=localhost.shiftlab.cloud docker-compose up -d
     ```
 
-4. Visit https://localhost.shiftlab.cloud:8502/
+4. Visit https://localhost.shiftlab.cloud/
 
 # Streamlit reverse proxy issues
 

@@ -1,0 +1,4 @@
+tls:
+  certificates:
+    - certFile: /config/streamlit-demo.pem
+      keyFile: /config/streamlit-demo-key.pem
