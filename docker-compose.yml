@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 services:
   app:
     build: .
@@ -10,11 +10,23 @@ services:
     #   - 8501:8501
     environment:
       - STREAMLIT_BROWSER_SERVER_ADDRESS
-  proxy:
-    image: nginx:1.21.5-alpine
-    volumes:
-      - "$PWD/nginx.conf:/etc/nginx/conf.d/default.conf:ro"
-      - "$PWD/streamlit-demo.pem:/secrets/streamlit-demo.pem:ro"
-      - "$PWD/streamlit-demo-key.pem:/secrets/streamlit-demo-key.pem:ro"
+    labels:
+      - "traefik.http.routers.app.rule=Host(`localhost.shiftlab.cloud`)"
+      - "traefik.http.routers.app.tls=true"
+
+  traefik:
+    image: traefik:v2.6
+    command:
+      - --api.insecure=true
+      - --entrypoints.web.address=:80
+      - --entrypoints.web-secure.address=:443
+      - --providers.docker=true
+      - --providers.file.directory=/config/
+      - --providers.file.watch=true
     ports:
-      - 8502:8502
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - "$PWD:/config/"

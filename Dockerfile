@@ -1,5 +1,6 @@
 FROM python:3.9-slim-bullseye
 WORKDIR /app
+EXPOSE 8501
 
 COPY requirements.txt /app
 RUN pip install -r requirements.txt
