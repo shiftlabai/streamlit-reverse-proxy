@@ -8,8 +8,6 @@ services:
     #
     # ports:
     #   - 8501:8501
-    environment:
-      - STREAMLIT_BROWSER_SERVER_ADDRESS
     labels:
       - "traefik.http.routers.app.rule=Host(`localhost.shiftlab.cloud`)"
       - "traefik.http.routers.app.tls=true"

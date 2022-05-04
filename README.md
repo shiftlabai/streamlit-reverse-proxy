@@ -15,25 +15,10 @@ To run under HTTPS on your own machine:
 
     (`localhost.shiftlab.cloud` resolves to 127.0.0.1, just like `localhost`. But using this alias means we can avoid using https://localhost, since doing so in most modern browsers will cause them to redirect all subsequent traffic to that domain to HTTPS. That creates problems any time you want to run some other service over plain HTTP. See [here](https://stackoverflow.com/q/25277457) for more.)
 
-3. Now bring up the docker services. Note that we need to set the `STREAMLIT_BROWSER_SERVER_ADDRESS` environment variable to our new server domain, since we're no longer using `localhost`, which is [whitelisted in Streamlit](https://github.com/streamlit/streamlit/blob/dd9084523e365e637443ea351eaaaa25f52d8412/lib/streamlit/server/server_util.py#L103).
+3. Bring up the docker services.
 
     ```
-    STREAMLIT_BROWSER_SERVER_ADDRESS=localhost.shiftlab.cloud docker-compose up -d
+    docker-compose up -d
     ```
 
 4. Visit https://localhost.shiftlab.cloud/
-
-# Streamlit reverse proxy issues
-
-## Websocket won't connect through Nginx reverse proxy unless you use `localhost`, even over regular HTTP
-
-If you're using a host other than `localhost` (or one of the other options explicitly [whitelisted in Streamlit](https://github.com/streamlit/streamlit/blob/dd9084523e365e637443ea351eaaaa25f52d8412/lib/streamlit/server/server_util.py#L101)), you need to set Streamlit's `browser.serverAddress` config value, otherwise attempts to connect to the web socket endpoint (`/stream`) will be rejected with a 403 error.
-
-You can set the `browser.serverAddress` config value by [passing it as an argument](https://docs.streamlit.io/library/advanced-features/configuration) to the `streamlit` command, or by setting the `STREAMLIT_BROWSER_SERVER_ADDRESS` environment variable. (You should use the environment variable approach if you're using docker compose.)
-
-For example, if you've aliased `foo.bar` to `localhost` and want to use that domain name, you need to do:
-
-```
-export STREAMLIT_BROWSER_SERVER_ADDRESS=foo.bar
-docker-compose up -d
-```
