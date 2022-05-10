@@ -1,6 +1,22 @@
 # Streamlit via Traefik
 
-This repo contains the demo Streamlit app documented [here](https://docs.streamlit.io/library/get-started/create-an-app), running behind a Traefik reverse proxy.
+Streamlit doesn't support running under HTTPS, but you might want to do that. One way to achieve this is to use a reverse proxy, and enable HTTPS on the proxy server. The user's browser connects to the proxy over HTTPS. The proxy server terminates the HTTPS connection and forwards requests over HTTP to Streamlit. Responses from Streamlit go via the proxy, back to the user.
+
+
+```
+┌────────────┐           ┌─────────┐           ┌─────────────┐
+│            │──────────▶│         │──────────▶│             │
+│  Browser   │   HTTPS   │  Proxy  │   HTTP    │  Streamlit  │
+│            │◀ ─ ─ ─ ─ ─│         │◀ ─ ─ ─ ─ ─│             │
+└────────────┘           └─────────┘           └─────────────┘
+
+
+ ──────────▶  Request
+
+ ◀ ─ ─ ─ ─ ─  Response
+ ```
+
+This repo contains the demo Streamlit app documented [here](https://docs.streamlit.io/library/get-started/create-an-app), running behind a [Traefik](https://traefik.io/traefik/) reverse proxy.
 
 # Running under HTTPS
 
