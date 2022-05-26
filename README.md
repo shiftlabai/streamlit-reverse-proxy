@@ -16,6 +16,10 @@ Streamlit doesn't support running under HTTPS, but you might want to do that. On
  
  ◀ ─ ─ ─ ─ ─  Response
  ```
+ 
+ ## Is this secure?
+ 
+Yes, as long as the connection between the proxy and Streamlit is over a trusted network, i.e. not the open Internet. For example, if the proxy and Streamlit are running inside the same Kubernetes cluster, or running on the same physical host, then this is a good approach.
 
 # Instructions
 
