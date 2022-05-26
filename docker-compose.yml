@@ -8,6 +8,14 @@ services:
     # ports:
     #   - 8501:8501
     labels:
+      # Create a basic auth middleware called test-auth. user1's password is "password".
+      #
+      # To create a new username/password entry:
+      #
+      #   htpasswd -nb user1 password | sed -e "s/\\\$/\$\$/g"
+      - "traefik.http.middlewares.test-auth.basicauth.users=user1:$$apr1$$XnxcGrAf$$AjOI2dWap6YsZn/q69GTu0"
+      # Apply the test-auth middleware to the app router
+      - "traefik.http.routers.app.middlewares=test-auth"
       - "traefik.http.routers.app.rule=Host(`localhost.shiftlab.cloud`)"
       - "traefik.http.routers.app.tls=true"
 
