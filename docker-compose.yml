@@ -3,8 +3,7 @@ services:
   app:
     build: .
     # Uncomment the ports section to expose the app port directly, for
-    # debugging. The intention is that access will be via the NGINX reverse
-    # proxy.
+    # debugging. The intention is that access will be via the reverse proxy.
     #
     # ports:
     #   - 8501:8501
